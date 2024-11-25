@@ -58,6 +58,12 @@
   </div>
 </nav>
 
+    
+<div class="m-5">
+  <span>Role: {{ request.session.user_role}}</span>
+  <span>Name: {{ request.session.user_name}}</span>
+</div>
+
 <div class="container mt-4">
   {% block content %}
   <!-- Content from child templates will be inserted here -->

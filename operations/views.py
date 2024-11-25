@@ -361,8 +361,12 @@ def login_view(request):
         
         user = authenticate(request, username=username, password=password)
         if user is not None:
+            
+            role = user.profile.role 
             print(f"User logged in: {user.username}, Role: {user.profile.role}")
             login(request, user)
+            request.session['user_role'] = role
+            request.session['user_name'] = username
             return redirect('index')
         else:
             messages.error(request, "Invalid username or password")
