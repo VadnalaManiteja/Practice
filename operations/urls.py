@@ -1,6 +1,7 @@
 from django.urls import path
 from . import views
 from django.contrib.auth.decorators import login_required
+from django.shortcuts import redirect
 
 urlpatterns = [
     path('operations/', login_required(views.operations), name='operations'),
@@ -24,6 +25,7 @@ urlpatterns = [
     path('view_operation/<int:pk>/', views.view_operation, name='view_operation'),
     path('view_student/<int:pk>/', views.view_student, name='view_student'),
     path('register/', views.register, name='register'),
+     path('', lambda request: redirect('login/')),  # Redirect to the login page
     path('login/',views.login_view, name='login'),
     path('logout/',views.logout_view,name='logout'),
 ]

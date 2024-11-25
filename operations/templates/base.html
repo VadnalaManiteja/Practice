@@ -8,62 +8,80 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 <body>
-
-<nav class="navbar navbar-expand-sm bg-dark navbar-dark">
-  <div class="container-fluid">
-    <ul class="navbar-nav">
-      <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-          Student
-        </a>
-        <ul class="dropdown-menu">
-          <li><a class="dropdown-item" href="{% url 'student' %}">Student Form</a></li>
-          <li><a class="dropdown-item" href="{% url 'student_list' %}"> Student List</a></li>
-        </ul>
-      </li>
-      <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-          Contact
-        </a>
-        <ul class="dropdown-menu">
-          <li><a class="dropdown-item" href="{% url 'operations' %}">Contact Form</a></li>
-          <li><a class="dropdown-item" href="{% url 'operations_list' %}">Contact List</a></li>
-        </ul>
-      </li>
-      <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-          Employee
-        </a>
-        <ul class="dropdown-menu">
-          <li><a class="dropdown-item" href="{% url 'employee' %}">Employee Form</a></li>
-          <li><a class="dropdown-item" href="{% url 'employee_list' %}">Employee List</a></li>
-        </ul>
-      </li>
-      <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-          Task
-        </a>
-        <ul class="dropdown-menu">
-          <li><a class="dropdown-item" href="{% url 'task' %}">Task Form</a></li>
-          <li><a class="dropdown-item" href="{% url 'task_list' %}">Task List</a></li>
-        </ul>
-      </li>
-    </ul>
-     <!-- Logout Button -->
-     <form class="d-flex ms-auto" method="post" action="{% url 'logout' %}">
-      {% csrf_token %}
-      <button class="btn btn-danger" type="submit">Logout</button>
-    </form>
-
-  </div>
-</nav>
-
-    
-<div class="m-5">
-  <span>Role: {{ request.session.user_role}}</span>
-  <span>Name: {{ request.session.user_name}}</span>
-</div>
-
+  <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+    <div class="container-fluid">
+      <!-- Navbar Links -->
+      <ul class="navbar-nav">
+        <li class="nav-item dropdown">
+          {% if request.session.user_role != "employee" %}
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Student
+          </a>
+          {% endif %}
+          <ul class="dropdown-menu">
+            {% if request.session.user_role == "employee" %}
+              <li><a class="dropdown-item" href="{% url 'student' %}">Student Form</a></li>
+              <li><a class="dropdown-item" href="{% url 'student_list' %}">Student List</a></li>
+            {% endif %}
+            {% if request.session.user_role == "student" %}
+              <li><a class="dropdown-item" href="{% url 'student_list' %}">Student List</a></li>
+            {% endif %}
+          </ul>
+        </li>
+        {% if request.session.user_role != "student" %}
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Employee
+          </a>
+          <ul class="dropdown-menu">
+            {% if request.session.user_role == "student" %}
+              <li><a class="dropdown-item" href="{% url 'employee' %}">Employee Form</a></li>
+              <li><a class="dropdown-item" href="{% url 'employee_list' %}">Employee List</a></li>
+            {% endif %}
+            {% if request.session.user_role == "employee" %}
+              <li><a class="dropdown-item" href="{% url 'employee_list' %}">Employee List</a></li>
+            {% endif %}
+          </ul>
+        </li>
+        {% endif %}
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Task
+          </a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="{% url 'task' %}">Task Form</a></li>
+            <li><a class="dropdown-item" href="{% url 'task_list' %}">Task List</a></li>
+          </ul>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Contact
+          </a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="{% url 'operations' %}">Contact Form</a></li>
+            <li><a class="dropdown-item" href="{% url 'operations_list' %}">Contact List</a></li>
+          </ul>
+        </li>
+      </ul>
+  
+      <!-- Centered Username -->
+      <div class="mx-auto text-warning">
+        Welcome, <strong>{{ request.session.user_name }}</strong>
+      </div>
+  
+      <!-- Right-Aligned Role and Logout Button -->
+      <div class="d-flex align-items-center">
+        <span class="navbar-text text-light me-3">
+          Role: <strong>{{ request.session.user_role }}</strong>
+        </span>
+        <form method="post" action="{% url 'logout' %}">
+          {% csrf_token %}
+          <button class="btn btn-danger" type="submit">Logout</button>
+        </form>
+      </div>
+    </div>
+  </nav>
+  
 <div class="container mt-4">
   {% block content %}
   <!-- Content from child templates will be inserted here -->
