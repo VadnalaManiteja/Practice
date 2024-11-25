@@ -1,0 +1,93 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-sm">
+                <div class="card-header bg-info text-white">
+                    <h3 class="card-title text-center">Student Form</h3>
+                </div>
+                <div class="card-body">
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div class="alert alert-success">{{ message }}</div>
+                        {% endfor %}
+                    {% endif %}
+
+                    <form method="post" enctype="multipart/form-data" action="{% url 'student' %}">
+                        {% csrf_token %}
+                        <!-- Profile Picture -->
+                        <div class="mb-4 text-center">
+                            <label for="profilepicture" class="form-label">Profile Picture</label>
+                            <div class="profile-picture-wrapper">
+                                <img id="profilePreview" 
+                                    src="https://cdn-icons-png.flaticon.com/512/847/847969.png" 
+                                    alt="Profile Picture" 
+                                    class="rounded-circle shadow-sm" 
+                                    style="width: 100px; height: 100px; object-fit: cover;">
+                            </div>
+                            <input type="file" id="profilepicture" name="profilepicture" 
+                                class="form-control mt-3" accept="image/*" 
+                                onchange="previewProfilePicture(event)">
+                        </div>
+
+                        <!-- JavaScript for Profile Picture Preview -->
+                        <script>
+                        function previewProfilePicture(event) {
+                            const reader = new FileReader();
+                            reader.onload = function() {
+                                const preview = document.getElementById('profilePreview');
+                                preview.src = reader.result;
+                            }
+                            reader.readAsDataURL(event.target.files[0]);
+                        }
+                        </script>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="studentname" class="form-label">Student Name:</label>
+                                    <input type="text" class="form-control" id="studentname" name="studentname" placeholder="Enter student name" required>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="mothername" class="form-label">Mother Name:</label>
+                                    <input type="text" class="form-control" id="mothername" name="mothername" placeholder="Enter mother name" required>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="fathername" class="form-label">Father Name:</label>
+                                    <input type="text" class="form-control" id="fathername" name="fathername" placeholder="Enter father name" required>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="classA" class="form-label">Class:</label>
+                                    <input type="text" class="form-control" id="classA" name="classA" placeholder="Enter class" required>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="email" class="form-label">Email:</label>
+                                    <input type="email" class="form-control" id="email" name="email" placeholder="Enter email" required>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="marks" class="form-label">Marks:</label>
+                                    <input type="number" class="form-control" id="marks" name="marks" placeholder="Enter marks" required>
+                                </div>
+                            </div>
+                        </div>
+
+                         <!--save and contibue button for view-->
+                         <div class="d-flex justify-content-center">
+                            <button type="submit" name="submit" value="save" class="btn btn-primary w-40 mt-4" style="margin-right: 10px;">Save and Continue</button>
+                            <button type="submit" name="submit" value="submit" class="btn btn-success w-40 mt-4">Submit</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1 class="mb-4">Employee Details</h1>
+    <div class="card">
+        <div class="card-body">
+            <div class="d-flex align-items-center mb-4">
+                {% if employee.profile_picture %}
+                    <img src="{{ employee.profile_picture.url }}" alt="Profile Picture" style="width: 100px; height: 100px; object-fit: cover; margin-right: 20px;">
+                {% else %}
+                    <img src="https://cdn-icons-png.flaticon.com/512/847/847969.png" alt="Default Icon" style="width: 100px; height: 100px; object-fit: cover; margin-right: 20px;">
+                {% endif %}
+                <h5 class="card-title mb-0">{{ employee.employeename }}</h5>
+            </div>
+            <p><strong>Employee ID:</strong> {{ employee.employeeid }}</p>
+            <p><strong>Email:</strong> {{ employee.email }}</p>
+            <p><strong>Department:</strong> {{ employee.department }}</p>
+            <p><strong>Experience (Years):</strong> {{ employee.experience }}</p>
+            <p><strong>Skills:</strong> {{ employee.skills }}</p>
+            <p><strong>Salary (LPA):</strong> {{ employee.salary }}</p>
+        </div>
+    </div>
+    <a href="{% url 'employee_list' %}" class="btn btn-secondary mt-3">Back to List</a>
+</div>
+{% endblock %}

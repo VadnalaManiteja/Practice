@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1 class="mb-4">Student Details</h1>
+    <div class="card">
+        <div class="card-body">
+            <div class="d-flex align-items-center mb-4">
+                {% if student.profile_picture %}
+                    <img src="{{ student.profile_picture.url }}" alt="Profile Picture" style="width: 100px; height: 100px; object-fit: cover; margin-right: 20px;">
+                {% else %}
+                    <img src="https://cdn-icons-png.flaticon.com/512/847/847969.png" alt="Default Icon" style="width: 100px; height: 100px; object-fit: cover; margin-right: 20px;">
+                {% endif %}
+                <h5 class="card-title mb-0">{{ student.studentname }}</h5>
+            </div>
+            <p><strong>Mother Name:</strong> {{ student.mothername }}</p>
+            <p><strong>Father Name:</strong> {{ student.fathername }}</p>
+            <p><strong>Class:</strong> {{ student.classA }}</p>
+            <p><strong>Email:</strong> {{ student.email }}</p>
+            <p><strong>Marks:</strong> {{ student.marks }}</p>
+        </div>
+    </div>
+    <a href="{% url 'student_list' %}" class="btn btn-secondary mt-3">Back to List</a>
+</div>
+{% endblock %}

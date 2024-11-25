@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-sm">
+                <div class="card-header bg-info text-white">
+                    <h3 class="card-title text-center">Contact Form</h3>
+                </div>
+                <div class="card-body">
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div class="alert alert-success">{{ message }}</div>
+                        {% endfor %}
+                    {% endif %}
+
+                    <form method="post" enctype="multipart/form-data" action="{% url 'operations' %}">
+                        {% csrf_token %}
+                        <!-- Profile Picture -->
+                        <div class="mb-4 text-center">
+                            <label for="profilepicture" class="form-label">Profile Picture</label>
+                            <div class="profile-picture-wrapper">
+                                <img id="profilePreview" 
+                                    src="https://cdn-icons-png.flaticon.com/512/847/847969.png" 
+                                    alt="Profile Picture" 
+                                    class="rounded-circle shadow-sm" 
+                                    style="width: 100px; height: 100px; object-fit: cover;">
+                            </div>
+                            <input type="file" id="profilepicture" name="profilepicture" 
+                                class="form-control mt-3" accept="image/*" 
+                                onchange="previewProfilePicture(event)">
+                        </div>
+
+                        <!-- JavaScript for Profile Picture Preview -->
+                        <script>
+                        function previewProfilePicture(event) {
+                            const reader = new FileReader();
+                            reader.onload = function() {
+                                const preview = document.getElementById('profilePreview');
+                                preview.src = reader.result;
+                            }
+                            reader.readAsDataURL(event.target.files[0]);
+                        }
+                        </script>
+                        <div class="row">
+                            <!-- Left Column -->
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="username" class="form-label">Username:</label>
+                                    <input type="text" class="form-control" id="username" name="username" placeholder="Enter user name" required>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="mobile" class="form-label">Mobile:</label>
+                                    <input type="text" class="form-control" id="mobile" name="mobile" placeholder="Enter mobile" required>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="email" class="form-label">Email:</label>
+                                    <input type="email" class="form-control" id="email" name="email" placeholder="Enter email" required>
+                                </div>
+                            </div>
+
+                            <!-- Right Column -->
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="city" class="form-label">City:</label>
+                                    <input type="text" class="form-control" id="city" name="city" placeholder="Enter city" required>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="pancard" class="form-label">Pancard:</label>
+                                    <input type="number" class="form-control" id="pancard" name="pancard" placeholder="Enter pancard" required>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="state" class="form-label">State:</label>
+                                    <input type="text" class="form-control" id="state" name="state" placeholder="Enter state" required>
+                                </div>
+                            </div>
+                        </div>
+                       <!--save and contibue button for view-->
+                        <div class="d-flex justify-content-center">
+                            <button type="submit" name="submit" value="save" class="btn btn-primary w-40 mt-4" style="margin-right: 10px;">Save and Continue</button>
+                            <button type="submit" name="submit" value="submit" class="btn btn-success w-40 mt-4">Submit</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

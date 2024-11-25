@@ -1,0 +1,98 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="bg-light">
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-10">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-info text-white">
+                        <h3 class="card-title text-center">Employee Form</h3>
+                    </div>
+                    <div class="card-body">
+                        {% if messages %}
+                            {% for message in messages %}
+                                <div class="alert alert-success">{{ message }}</div>
+                            {% endfor %}
+                        {% endif %}
+
+                        <form method="post" enctype="multipart/form-data" action="{% url 'employee' %}">
+                            {% csrf_token %}
+                            <!-- Profile Picture -->
+                            <div class="mb-4 text-center">
+                                <label for="profilepicture" class="form-label">Profile Picture</label>
+                                <div class="profile-picture-wrapper">
+                                    <img id="profilePreview" 
+                                        src="https://cdn-icons-png.flaticon.com/512/847/847969.png" 
+                                        alt="Profile Picture" 
+                                        class="rounded-circle shadow-sm" 
+                                        style="width: 100px; height: 100px; object-fit: cover;">
+                                </div>
+                                <input type="file" id="profilepicture" name="profilepicture" 
+                                    class="form-control mt-3" accept="image/*" 
+                                    onchange="previewProfilePicture(event)">
+                            </div>
+
+                            <!-- JavaScript for Profile Picture Preview -->
+                            <script>
+                            function previewProfilePicture(event) {
+                                const reader = new FileReader();
+                                reader.onload = function() {
+                                    const preview = document.getElementById('profilePreview');
+                                    preview.src = reader.result;
+                                }
+                                reader.readAsDataURL(event.target.files[0]);
+                            }
+                            </script>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="employeeid" class="form-label">Employee ID:</label>
+                                        <input type="number" class="form-control" id="employeeid" name="employeeid" placeholder="Enter employee ID" required>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="employeename" class="form-label">Employee Name:</label>
+                                        <input type="text" class="form-control" id="employeename" name="employeename" placeholder="Enter employee name" required>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="employeeemail" class="form-label">Employee Email:</label>
+                                        <input type="email" class="form-control" id="employeeemail" name="employeeemail" placeholder="Enter employee email" required>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="employeedepartment" class="form-label">Employee Department:</label>
+                                        <input type="text" class="form-control" id="employeedepartment" name="employeedepartment" placeholder="Enter employee department" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="employeeexperience" class="form-label">Employee Experience:</label>
+                                        <input type="text" class="form-control" id="employeeexperience" name="employeeexperience" placeholder="Enter employee experience" required>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="employeeskills" class="form-label">Employee Skills:</label>
+                                        <input type="text" class="form-control" id="employeeskills" name="employeeskills" placeholder="Enter employee skills" required>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="employeesalary" class="form-label">Salary:</label>
+                                        <input type="number" class="form-control" id="employeesalary" name="employeesalary" placeholder="Enter salary" required>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="d-flex justify-content-center">
+                                <button type="submit" name="submit" value="save" class="btn btn-primary w-40 mt-4" style="margin-right: 10px;">Save and Continue</button>
+                                <button type="submit" name="submit" value="submit" class="btn btn-success w-40 mt-4">Submit</button>
+                            </div>                          
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
