@@ -28,7 +28,7 @@ def operations(request):
 
         if request.POST.get('submit') == 'save':
             messages.success(request, 'Contact data has been saved. You can add more Contacts.')
-            return render(request, 'operations.html')  # Stay on the same form page
+            return render(request, 'contacts/operations.html')  # Stay on the same form page
 
         # If "Submit" button was clicked
         if request.POST.get('submit') == 'submit':
@@ -36,7 +36,7 @@ def operations(request):
             return redirect('operations_list')  # Redirect to the contact list page
 
     # Handle GET requests and render the form
-    return render(request, 'operations.html')
+    return render(request, 'contacts/operations.html')
 
 
 def student(request):
@@ -63,14 +63,14 @@ def student(request):
         )
         if request.POST.get('submit') == 'save':
             messages.success(request, 'Student data has been saved. You can add more students data.')
-            return render(request, 'student.html')  # Stay on the same form page
+            return render(request, 'students/student.html')  # Stay on the same form page
 
         # If "Save and Submit" button was clicked
         if request.POST.get('submit') == 'submit':
             messages.success(request, 'Student data has been successfully submitted.')
             return redirect('student_list')  # Redirect to the employee list page
 
-    return render(request, 'student.html')
+    return render(request, 'students/student.html')
 
 
 def employee(request):
@@ -98,14 +98,14 @@ def employee(request):
         )
         if request.POST.get('submit') == 'save':
             messages.success(request, 'Employee data has been saved. You can add more employees.')
-            return render(request, 'employee.html')  # Stay on the same form page
+            return render(request, 'employees/employee.html')  # Stay on the same form page
 
         # If "Submit" button was clicked
         if request.POST.get('submit') == 'submit':
             messages.success(request, 'Employee data has been successfully submitted.')
             return redirect('employee_list')  # Redirect to the employee list page
 
-    return render(request, 'employee.html')
+    return render(request, 'employees/employee.html')
 
 
 def task(request):
@@ -123,33 +123,33 @@ def task(request):
         )
         if request.POST.get('submit') == 'save':
             messages.success(request, 'Task data has been saved. You can add more Tasks.')
-            return render(request, 'tasks.html')  # Stay on the same form page
+            return render(request, 'tasks/tasks.html')  # Stay on the same form page
 
         # If "Submit" button was clicked
         if request.POST.get('submit') == 'submit':
             messages.success(request, 'Task data has been successfully submitted.')
             return redirect('task_list')  # Redirect to the employee list page
 
-    return render(request, 'tasks.html')
+    return render(request, 'tasks/tasks.html')
 
 
 
 def student_list(request):
     students = Student.objects.all()  # Query to get all student records
-    return render(request, 'student-list.html', {'students': students})
+    return render(request, 'students/student-list.html', {'students': students})
 
 def task_list(request):
     tasks = Task.objects.all()  # Query to get all task records
-    return render(request, 'tasks-list.html', {'tasks': tasks})
+    return render(request, 'tasks/tasks-list.html', {'tasks': tasks})
 
 
 def employee_list(request):
     employees = Employee.objects.all()  # Query to get all employee records
-    return render(request, 'employee-list.html', {'employees': employees})
+    return render(request, 'employees/employee-list.html', {'employees': employees})
 
 def operations_list(request):
     contacts = Contact.objects.all()  # Query to get all contacts records
-    return render(request, 'operations-list.html', {'contacts': contacts})
+    return render(request, 'contacts/operations-list.html', {'contacts': contacts})
 
 
 from django.shortcuts import get_object_or_404, redirect
@@ -242,7 +242,7 @@ def update_employee(request, id):
         messages.success(request, 'employee data updated')
         return redirect('employee_list')  # Adjust with your URL name for the list
     
-    return render(request, 'update-employee.html', {'employee': employee})
+    return render(request, 'employees/update-employee.html', {'employee': employee})
 
 
 def update_contact(request, id):
@@ -259,7 +259,7 @@ def update_contact(request, id):
         contact.save()
         messages.success(request, 'Contact updated successfully.')
         return redirect('operations_list')
-    return render(request, 'update-operations.html', {'contact': contact})
+    return render(request, 'contacts/update-operations.html', {'contact': contact})
 
 
 
@@ -280,7 +280,7 @@ def update_student(request, id):
         messages.success(request, 'Student updated successfully.')
         return redirect('student_list')  # Adjust to your URL name for the student list
 
-    return render(request, 'update-student.html', {'student': student})
+    return render(request, 'students/update-student.html', {'student': student})
 
 
 def update_task(request, id):
@@ -294,7 +294,7 @@ def update_task(request, id):
         messages.success(request, 'task data updated.')
         return redirect('task_list')  # Replace with the URL name for your task list
 
-    return render(request, 'update-tasks.html', {'task': task})
+    return render(request, 'tasks/update-tasks.html', {'task': task})
 
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
@@ -305,15 +305,15 @@ def index(request):
 
 def view_employee(request, pk):
     employee = get_object_or_404(Employee, pk=pk)
-    return render(request, 'view-employee.html', {'employee': employee})
+    return render(request, 'employees/view-employee.html', {'employee': employee})
 
 def view_operation(request, pk):
     contact = get_object_or_404(Contact, pk=pk)
-    return render(request, 'view-operations.html', {'contact': contact})
+    return render(request, 'contacts/view-operations.html', {'contact': contact})
 
 def view_student(request, pk):
     student = get_object_or_404(Student, pk=pk)
-    return render(request, 'view-student.html', {'student': student})
+    return render(request, 'students/view-student.html', {'student': student})
 
 from django.shortcuts import render, redirect
 from django.contrib import messages
@@ -348,7 +348,7 @@ def register(request):
             messages.success(request, "Registration successful! You can now log in.")  # Success message
             return redirect('login')  # Redirect to the login page
 
-    return render(request, 'register.html', {'role_choices': ROLE_CHOICES})
+    return render(request, 'authentication/register.html', {'role_choices': ROLE_CHOICES})
 
 
 from django.shortcuts import render, redirect
@@ -372,7 +372,7 @@ def login_view(request):
         else:
             messages.error(request, "Invalid username or password")
             
-    return render(request,'login.html')
+    return render(request,'authentication/login.html')
 
 def logout_view(request):
     logout(request)
