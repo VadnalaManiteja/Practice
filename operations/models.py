@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    role = models.CharField(max_length=20, choices=[('employee', 'Employee'), ('student', 'Student')])
+    role = models.CharField(max_length=20, choices=[('employee', 'Employee'), ('student', 'Student'),('staff', 'Staff')])
 
     def _str_(self):
         return f"{self.user.username} - {self.role}"

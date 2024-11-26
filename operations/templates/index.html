@@ -20,6 +20,10 @@
           </a>
           {% endif %}
           <ul class="dropdown-menu">
+            {% if request.session.user_role == "staff" %}
+              <li><a class="dropdown-item" href="{% url 'student' %}">Student Form</a></li>
+              <li><a class="dropdown-item" href="{% url 'student_list' %}">Student List</a></li>
+            {% endif %}
             {% if request.session.user_role == "employee" %}
               <li><a class="dropdown-item" href="{% url 'student' %}">Student Form</a></li>
               <li><a class="dropdown-item" href="{% url 'student_list' %}">Student List</a></li>
@@ -35,6 +39,10 @@
             Employee
           </a>
           <ul class="dropdown-menu">
+            {% if request.session.user_role == "staff" %}
+              <li><a class="dropdown-item" href="{% url 'employee' %}">Employee Form</a></li>
+              <li><a class="dropdown-item" href="{% url 'employee_list' %}">Employee List</a></li>
+            {% endif %}
             {% if request.session.user_role == "student" %}
               <li><a class="dropdown-item" href="{% url 'employee' %}">Employee Form</a></li>
               <li><a class="dropdown-item" href="{% url 'employee_list' %}">Employee List</a></li>

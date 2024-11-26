@@ -2,7 +2,7 @@ from django.shortcuts import render
 from .models import Contact,Student,Employee,Task,Profile
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from  .decorators import role_required
+
 
 # Create your views here.
 def operations(request):
@@ -38,7 +38,7 @@ def operations(request):
     # Handle GET requests and render the form
     return render(request, 'operations.html')
 
-@role_required('student')
+
 def student(request):
     if request.method == 'POST':
         # Retrieve data from the POST request
@@ -72,7 +72,7 @@ def student(request):
 
     return render(request, 'student.html')
 
-@role_required('employee')
+
 def employee(request):
     if request.method == 'POST':
         employeeid = request.POST.get('employeeid')
@@ -133,7 +133,7 @@ def task(request):
     return render(request, 'tasks.html')
 
 
-@role_required('student')
+
 def student_list(request):
     students = Student.objects.all()  # Query to get all student records
     return render(request, 'student-list.html', {'students': students})
@@ -142,7 +142,7 @@ def task_list(request):
     tasks = Task.objects.all()  # Query to get all task records
     return render(request, 'tasks-list.html', {'tasks': tasks})
 
-@role_required('employee')
+
 def employee_list(request):
     employees = Employee.objects.all()  # Query to get all employee records
     return render(request, 'employee-list.html', {'employees': employees})
@@ -326,6 +326,7 @@ from .models import Profile  # Import Profile if you're using it
 ROLE_CHOICES = [
     ('employee', 'Employee'),
     ('student', 'Student'),
+     ('staff', 'Staff'),
 ]
 
 def register(request):
