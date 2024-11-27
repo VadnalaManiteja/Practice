@@ -1,0 +1,29 @@
+.light-green {
+  background-color: rgb(5, 108, 5) !important;
+  color: white; /* Readable on dark green */
+}
+
+.light-yellow {
+  background-color:#A66E38 !important;
+  color: white; /* Readable on bright yellow */
+}
+
+.light-blue {
+  background-color: #4335A7 !important;
+  color: white; /* Readable on dark blue */
+}
+
+
+.light-green .navbar-nav .nav-link,
+.light-blue .navbar-nav .nav-link,
+.light-yellow .navbar-nav .nav-link {
+  color: white !important;
+}
+
+.text-warning-highlight {
+  /*background-color: rgb(33, 37, 41); /* Dark gray */
+  font-size: 1.5rem; /* Increased font size */
+  padding: 5px 10px; /* Padding for highlight effect */
+  border-radius: 5px; /* Rounded corners */
+}
+
