@@ -30,18 +30,18 @@ def employee(request):
         )
         if request.POST.get('submit') == 'save':
             messages.success(request, 'Employee data has been saved. You can add more employees.')
-            return render(request, 'employee.html')  # Stay on the same form page
+            return render(request, 'employees/employee.html')  # Stay on the same form page
 
         # If "Submit" button was clicked
         if request.POST.get('submit') == 'submit':
             messages.success(request, 'Employee data has been successfully submitted.')
             return redirect('employee_list')  # Redirect to the employee list page
 
-    return render(request, 'employee.html')
+    return render(request, 'employees/employee.html')
 
 def employee_list(request):
     employees = Employee.objects.all()  # Query to get all employee records
-    return render(request, 'employee-list.html', {'employees': employees})
+    return render(request, 'employees/employee-list.html', {'employees': employees})
 
 def delete_employee(request, id):
     employee = get_object_or_404(Employee, id=id)
@@ -74,8 +74,8 @@ def update_employee(request, id):
         messages.success(request, 'employee data updated')
         return redirect('employee_list')  # Adjust with your URL name for the list
     
-    return render(request, 'update-employee.html', {'employee': employee})
+    return render(request, 'employees/update-employee.html', {'employee': employee})
 
 def view_employee(request, pk):
     employee = get_object_or_404(Employee, pk=pk)
-    return render(request, 'view-employee.html', {'employee': employee})
+    return render(request, 'employees/view-employee.html', {'employee': employee})

@@ -29,18 +29,18 @@ def student(request):
         )
         if request.POST.get('submit') == 'save':
             messages.success(request, 'Student data has been saved. You can add more students data.')
-            return render(request, 'student.html')  # Stay on the same form page
+            return render(request, 'students/student.html')  # Stay on the same form page
 
         # If "Save and Submit" button was clicked
         if request.POST.get('submit') == 'submit':
             messages.success(request, 'Student data has been successfully submitted.')
             return redirect('student_list')  # Redirect to the employee list page
 
-    return render(request, 'student.html')
+    return render(request, 'students/student.html')
 
 def student_list(request):
     students = Student.objects.all()  # Query to get all student records
-    return render(request, 'student-list.html', {'students': students})
+    return render(request, 'students/student-list.html', {'students': students})
 
 def delete_student(request, id):
     student = get_object_or_404(Student, id=id)
@@ -71,12 +71,12 @@ def update_student(request, id):
         messages.success(request, 'Student updated successfully.')
         return redirect('student_list')  # Adjust to your URL name for the student list
 
-    return render(request, 'update-student.html', {'student': student})
+    return render(request, 'students/update-student.html', {'student': student})
 
 
 def view_student(request, pk):
     student = get_object_or_404(Student, pk=pk)
-    return render(request, 'view-student.html', {'student': student})
+    return render(request, 'students/view-student.html', {'student': student})
 
 
 

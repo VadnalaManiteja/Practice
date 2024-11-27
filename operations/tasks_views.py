@@ -20,18 +20,18 @@ def task(request):
         )
         if request.POST.get('submit') == 'save':
             messages.success(request, 'Task data has been saved. You can add more Tasks.')
-            return render(request, 'tasks.html')  # Stay on the same form page
+            return render(request, 'tasks/tasks.html')  # Stay on the same form page
 
         # If "Submit" button was clicked
         if request.POST.get('submit') == 'submit':
             messages.success(request, 'Task data has been successfully submitted.')
             return redirect('task_list')  # Redirect to the employee list page
 
-    return render(request, 'tasks.html')
+    return render(request, 'tasks/tasks.html')
 
 def task_list(request):
     tasks = Task.objects.all()  # Query to get all task records
-    return render(request, 'tasks-list.html', {'tasks': tasks})
+    return render(request, 'tasks/tasks-list.html', {'tasks': tasks})
 
 def delete_task(request, id):
     task = get_object_or_404(Task, id=id)
@@ -58,4 +58,4 @@ def update_task(request, id):
         messages.success(request, 'task data updated.')
         return redirect('task_list')  # Replace with the URL name for your task list
 
-    return render(request, 'update-tasks.html', {'task': task})
+    return render(request, 'tasks/update-tasks.html', {'task': task})

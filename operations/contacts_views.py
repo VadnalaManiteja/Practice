@@ -29,19 +29,19 @@ def operations(request):
 
         if request.POST.get('submit') == 'save':
             messages.success(request, 'Contact data has been saved. You can add more Contacts.')
-            return render(request, 'operations.html')  # Stay on the same form page
+            return render(request, 'contacts/operations.html')  # Stay on the same form page
 
         # If "Submit" button was clicked
         if request.POST.get('submit') == 'submit':
             messages.success(request, 'Contact data has been successfully submitted.')
-            return redirect('operations_list')  # Redirect to the contact list page
+            return redirect('contacts/operations_list')  # Redirect to the contact list page
 
     # Handle GET requests and render the form
-    return render(request, 'operations.html')
+    return render(request, 'contacts/operations.html')
 
 def operations_list(request):
     contacts = Contact.objects.all()  # Query to get all contacts records
-    return render(request, 'operations-list.html', {'contacts': contacts})
+    return render(request, 'contacts/operations-list.html', {'contacts': contacts})
 
 def delete_operations(request, id):
     contact = get_object_or_404(Contact, id=id)
@@ -70,8 +70,8 @@ def update_contact(request, id):
         contact.save()
         messages.success(request, 'Contact updated successfully.')
         return redirect('operations_list')
-    return render(request, 'update-operations.html', {'contact': contact})
+    return render(request, 'contacts/update-operations.html', {'contact': contact})
 
 def view_operation(request, pk):
     contact = get_object_or_404(Contact, pk=pk)
-    return render(request, 'view-operations.html', {'contact': contact})
+    return render(request, 'contacts/view-operations.html', {'contact': contact})
