@@ -29,7 +29,7 @@ class Student(models.Model):
     fathername = models.CharField(max_length=100)
     classA = models.CharField(max_length=15)
     email = models.CharField(max_length=50, null=True, blank=True)
-    marks = models.CharField(max_length=15)
+    marks = models.CharField(max_length=3)
     serial_number = models.PositiveIntegerField(default=0)  # New field for display order
     profile_picture = models.ImageField(upload_to='student_pictures/', null=True, blank=True)  # Add this line
 

@@ -15,9 +15,9 @@
                         {% endfor %}
                     {% endif %}
 
-                    <form method="post" enctype="multipart/form-data" action="{% url 'student' %}">
+                    <form method="post" enctype="multipart/form-data" action="{% url 'student' %}"> 
                         {% csrf_token %}
-                        <!-- Profile Picture -->
+                       <!-- Profile Picture -->
                         <div class="mb-4 text-center">
                             <label for="profilepicture" class="form-label">Profile Picture</label>
                             <div class="profile-picture-wrapper">
@@ -30,51 +30,97 @@
                             <input type="file" id="profilepicture" name="profilepicture" 
                                 class="form-control mt-3" accept="image/*" 
                                 onchange="previewProfilePicture(event)">
+                            <div id="fileError" class="text-danger mt-2" style="display:none;">
+                                <small>Please upload only JPG or JPEG files.</small>
+                            </div>
                         </div>
 
-                        <!-- JavaScript for Profile Picture Preview -->
+                        <!-- JavaScript for Profile Picture Preview and Validation -->
                         <script>
                         function previewProfilePicture(event) {
-                            const reader = new FileReader();
-                            reader.onload = function() {
-                                const preview = document.getElementById('profilePreview');
-                                preview.src = reader.result;
+                            const fileInput = event.target;
+                            const file = fileInput.files[0];
+                            const fileError = document.getElementById('fileError');
+                            const preview = document.getElementById('profilePreview');
+
+                            // Reset error message and image preview
+                            fileError.style.display = 'none';
+
+                            // Check if the file is a valid image (JPG or JPEG)
+                            const validFormats = ['image/jpeg', 'image/jpg'];
+                            if (file && validFormats.includes(file.type)) {
+                                const reader = new FileReader();
+                                reader.onload = function() {
+                                    preview.src = reader.result;
+                                }
+                                reader.readAsDataURL(file);
+                            } else {
+                                // Show error message and reset the preview if the file is invalid
+                                fileInput.value = ''; // Clear the file input
+                                preview.src = "https://cdn-icons-png.flaticon.com/512/847/847969.png"; // Reset to default image
+                                fileError.style.display = 'block'; // Show error message
                             }
-                            reader.readAsDataURL(event.target.files[0]);
                         }
                         </script>
+
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="studentname" class="form-label">Student Name:</label>
-                                    <input type="text" class="form-control" id="studentname" name="studentname" placeholder="Enter student name" required>
-                                </div>
+                                    <input type="text" class="form-control" id="studentname" name="studentname" 
+                                           placeholder="Enter student name" required 
+                                           oninput="formatToUppercaseAndValidate(this)">
+                                    <span class="error-message text-danger"></span>
+                                </div>                                
 
                                 <div class="mb-3">
                                     <label for="mothername" class="form-label">Mother Name:</label>
-                                    <input type="text" class="form-control" id="mothername" name="mothername" placeholder="Enter mother name" required>
+                                    <input type="text" class="form-control" id="mothername" name="mothername" 
+                                           placeholder="Enter mother name" required 
+                                           oninput="formatToTitleCaseAndValidate(this)">
+                                    <span class="error-message text-danger"></span>
                                 </div>
-
+                                
                                 <div class="mb-3">
                                     <label for="fathername" class="form-label">Father Name:</label>
-                                    <input type="text" class="form-control" id="fathername" name="fathername" placeholder="Enter father name" required>
+                                    <input type="text" class="form-control" id="fathername" name="fathername" 
+                                           placeholder="Enter father name" required 
+                                           oninput="formatToTitleCaseAndValidate(this)">
+                                    <span class="error-message text-danger"></span>
                                 </div>
+                                
                             </div>
 
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="classA" class="form-label">Class:</label>
-                                    <input type="text" class="form-control" id="classA" name="classA" placeholder="Enter class" required>
+                                    <select class="form-control" id="classA" name="classA" required>
+                                        <option value="" disabled selected>Select class</option>
+                                        <option value="1st">1st</option>
+                                        <option value="2nd">2nd</option>
+                                        <option value="3rd">3rd</option>
+                                        <option value="4th">4th</option>
+                                        <option value="5th">5th</option>
+                                        <option value="6th">6th</option>
+                                        <option value="7th">7th</option>
+                                        <option value="8th">8th</option>
+                                        <option value="9th">9th</option>
+                                        <option value="10th">10th</option>
+                                    </select>
                                 </div>
-
+                                
                                 <div class="mb-3">
                                     <label for="email" class="form-label">Email:</label>
-                                    <input type="email" class="form-control" id="email" name="email" placeholder="Enter email" required>
+                                    <input type="text" class="form-control" id="email" name="email" placeholder="Enter email" required oninput="autoCompleteEmail(this)">
+                                    <span class="text-danger"></span>
                                 </div>
+                                
+                                
+                                
 
                                 <div class="mb-3">
                                     <label for="marks" class="form-label">Marks:</label>
-                                    <input type="number" class="form-control" id="marks" name="marks" placeholder="Enter marks" required>
+                                    <input type="number" class="form-control" id="marks" name="marks"  min="0" max="600" required oninput="if(this.value.length > 3) this.value = this.value.slice(0, 3);" placeholder="Enter marks">
                                 </div>
                             </div>
                         </div>
@@ -90,4 +136,28 @@
         </div>
     </div>
 </div>
+<script>
+    function formatToUppercaseAndValidate(input) {
+        const validChars = /^[A-Z\s]*$/; // Only uppercase letters and spaces
+        input.value = input.value.toUpperCase(); // Convert to uppercase
+        if (!validChars.test(input.value)) {
+            input.value = input.value.replace(/[^A-Z\s]/g, ''); // Remove invalid characters
+        }
+    }
+    function formatToTitleCaseAndValidate(input) {
+        const validChars = /^[A-Za-z\s]*$/; // Only letters and spaces
+        input.value = input.value.replace(/[^A-Za-z\s]/g, ''); // Remove invalid characters
+        input.value = input.value.toLowerCase().replace(/(^\w|\s\w)/g, letter => letter.toUpperCase()); // Title case
+    }
+    function autoCompleteEmail(input) {
+        const emailValue = input.value.trim();
+        const atIndex = emailValue.indexOf('@');
+
+        // Check if '@' is typed and if the domain part isn't already 'gmail.com'
+        if (atIndex !== -1 && !emailValue.substring(atIndex).includes('gmail.com')) {
+            // If '@' is typed without 'gmail.com', append 'gmail.com'
+            input.value = emailValue + '@gmail.com'.slice(emailValue.length - atIndex);
+        }
+    }
+</script>
 {% endblock %}
