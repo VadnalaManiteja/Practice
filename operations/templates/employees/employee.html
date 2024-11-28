@@ -16,7 +16,7 @@
                             {% endfor %}
                         {% endif %}
 
-                        <form method="post" enctype="multipart/form-data" action="{% url 'employee' %}">
+                        <form method="post" enctype="multipart/form-data" action="{% url 'employee' %}" id="employeeForm">
                             {% csrf_token %}
                             <!-- Profile Picture -->
                             <div class="mb-4 text-center">
@@ -30,7 +30,7 @@
                                 </div>
                                 <input type="file" id="profilepicture" name="profilepicture" 
                                     class="form-control mt-3" accept="image/*" 
-                                    onchange="previewProfilePicture(event)">
+                                    onchange="previewProfilePicture(event)" required>
                             </div>
 
                             <!-- JavaScript for Profile Picture Preview -->
@@ -49,44 +49,44 @@
                                 <div class="col-md-6">
                                     <div class="mb-3">
                                         <label for="employeeid" class="form-label">Employee ID:</label>
-                                        <input type="number" class="form-control" id="employeeid" name="employeeid" placeholder="Enter employee ID" required>
+                                        <input type="number" class="form-control" id="employeeid" name="employeeid" placeholder="Enter employee ID" required disabled>
                                     </div>
 
                                     <div class="mb-3">
                                         <label for="employeename" class="form-label">Employee Name:</label>
-                                        <input type="text" class="form-control" id="employeename" name="employeename" placeholder="Enter employee name" required>
+                                        <input type="text" class="form-control" id="employeename" name="employeename" placeholder="Enter employee name" required disabled>
                                     </div>
 
                                     <div class="mb-3">
                                         <label for="employeeemail" class="form-label">Employee Email:</label>
-                                        <input type="email" class="form-control" id="employeeemail" name="employeeemail" placeholder="Enter employee email" required>
+                                        <input type="email" class="form-control" id="employeeemail" name="employeeemail" placeholder="Enter employee email" required disabled>
                                     </div>
 
                                     <div class="mb-3">
                                         <label for="employeedepartment" class="form-label">Employee Department:</label>
-                                        <input type="text" class="form-control" id="employeedepartment" name="employeedepartment" placeholder="Enter employee department" required>
+                                        <input type="text" class="form-control" id="employeedepartment" name="employeedepartment" placeholder="Enter employee department" required disabled>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="mb-3">
                                         <label for="employeeexperience" class="form-label">Employee Experience:</label>
-                                        <input type="text" class="form-control" id="employeeexperience" name="employeeexperience" placeholder="Enter employee experience" required>
+                                        <input type="text" class="form-control" id="employeeexperience" name="employeeexperience" placeholder="Enter employee experience" required disabled>
                                     </div>
 
                                     <div class="mb-3">
                                         <label for="employeeskills" class="form-label">Employee Skills:</label>
-                                        <input type="text" class="form-control" id="employeeskills" name="employeeskills" placeholder="Enter employee skills" required>
+                                        <input type="text" class="form-control" id="employeeskills" name="employeeskills" placeholder="Enter employee skills" required disabled>
                                     </div>
 
                                     <div class="mb-3">
                                         <label for="employeesalary" class="form-label">Salary:</label>
-                                        <input type="number" class="form-control" id="employeesalary" name="employeesalary" placeholder="Enter salary" required>
+                                        <input type="number" class="form-control" id="employeesalary" name="employeesalary" placeholder="Enter salary" required disabled>
                                     </div>
                                 </div>
                             </div>
                             <div class="d-flex justify-content-center">
-                                <button type="submit" name="submit" value="save" class="btn btn-primary w-40 mt-4" style="margin-right: 10px;">Save and Continue</button>
-                                <button type="submit" name="submit" value="submit" class="btn btn-success w-40 mt-4">Submit</button>
+                                <button type="submit" name="submit" value="save" class="btn btn-primary w-40 mt-4" style="margin-right: 10px;" disabled>Save and Continue</button>
+                                <button type="submit" name="submit" value="submit" class="btn btn-success w-40 mt-4" disabled>Submit</button>
                             </div>                          
                         </form>
                     </div>
@@ -95,4 +95,38 @@
         </div>
     </div>
 </div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const form = document.getElementById('employeeForm');
+        const fields = Array.from(form.querySelectorAll('input, button'));
+        const requiredFields = fields.filter(field => field.hasAttribute('required')); // Filter required fields
+
+        // Enable the first field
+        requiredFields[0].disabled = false;
+
+        // Function to validate fields and enable the next
+        const validateAndEnableNext = (field, nextField) => {
+            field.addEventListener('input', function () {
+                if (field.value.trim()) {
+                    field.classList.remove('is-invalid');
+                    field.classList.add('is-valid');
+                    if (nextField) nextField.disabled = false; // Enable next field
+                } else {
+                    field.classList.remove('is-valid');
+                    field.classList.add('is-invalid');
+                    if (nextField) nextField.disabled = true; // Disable next field
+                }
+            });
+        };
+
+        // Loop through fields and apply sequential logic
+        for (let i = 0; i < requiredFields.length; i++) {
+            const currentField = requiredFields[i];
+            const nextField = requiredFields[i + 1] || null;
+            validateAndEnableNext(currentField, nextField);
+        }
+    });
+</script>
+
 {% endblock %}

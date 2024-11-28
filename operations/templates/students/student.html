@@ -15,7 +15,7 @@
                         {% endfor %}
                     {% endif %}
 
-                    <form method="post" enctype="multipart/form-data" action="{% url 'student' %}"> 
+                    <form method="post" enctype="multipart/form-data" action="{% url 'student' %}" id="studentForm"> 
                         {% csrf_token %}
                        <!-- Profile Picture -->
                         <div class="mb-4 text-center">
@@ -29,7 +29,7 @@
                             </div>
                             <input type="file" id="profilepicture" name="profilepicture" 
                                 class="form-control mt-3" accept="image/*" 
-                                onchange="previewProfilePicture(event)">
+                                onchange="previewProfilePicture(event)" required>
                             <div id="fileError" class="text-danger mt-2" style="display:none;">
                                 <small>Please upload only JPG or JPEG files.</small>
                             </div>
@@ -68,7 +68,7 @@
                                 <div class="mb-3">
                                     <label for="studentname" class="form-label">Student Name:</label>
                                     <input type="text" class="form-control" id="studentname" name="studentname" 
-                                           placeholder="Enter student name" required 
+                                           placeholder="Enter student name" required disabled 
                                            oninput="formatToUppercaseAndValidate(this)">
                                     <span class="error-message text-danger"></span>
                                 </div>                                
@@ -76,7 +76,7 @@
                                 <div class="mb-3">
                                     <label for="mothername" class="form-label">Mother Name:</label>
                                     <input type="text" class="form-control" id="mothername" name="mothername" 
-                                           placeholder="Enter mother name" required 
+                                           placeholder="Enter mother name" required disabled 
                                            oninput="formatToTitleCaseAndValidate(this)">
                                     <span class="error-message text-danger"></span>
                                 </div>
@@ -84,7 +84,7 @@
                                 <div class="mb-3">
                                     <label for="fathername" class="form-label">Father Name:</label>
                                     <input type="text" class="form-control" id="fathername" name="fathername" 
-                                           placeholder="Enter father name" required 
+                                           placeholder="Enter father name" required disabled 
                                            oninput="formatToTitleCaseAndValidate(this)">
                                     <span class="error-message text-danger"></span>
                                 </div>
@@ -94,7 +94,7 @@
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="classA" class="form-label">Class:</label>
-                                    <select class="form-control" id="classA" name="classA" required>
+                                    <select class="form-control" id="classA" name="classA" required disabled>
                                         <option value="" disabled selected>Select class</option>
                                         <option value="1st">1st</option>
                                         <option value="2nd">2nd</option>
@@ -111,7 +111,7 @@
                                 
                                 <div class="mb-3">
                                     <label for="email" class="form-label">Email:</label>
-                                    <input type="text" class="form-control" id="email" name="email" placeholder="Enter email" required oninput="autoCompleteEmail(this)">
+                                    <input type="text" class="form-control" id="email" name="email" placeholder="Enter email" required disabled oninput="autoCompleteEmail(this)">
                                     <span class="text-danger"></span>
                                 </div>
                                 
@@ -120,15 +120,15 @@
 
                                 <div class="mb-3">
                                     <label for="marks" class="form-label">Marks:</label>
-                                    <input type="number" class="form-control" id="marks" name="marks"  min="0" max="600" required oninput="if(this.value.length > 3) this.value = this.value.slice(0, 3);" placeholder="Enter marks">
+                                    <input type="number" class="form-control" id="marks" name="marks"  min="0" max="600"  oninput="if(this.value.length > 3) this.value = this.value.slice(0, 3);" placeholder="Enter marks" required disabled>
                                 </div>
                             </div>
                         </div>
 
                          <!--save and contibue button for view-->
                          <div class="d-flex justify-content-center">
-                            <button type="submit" name="submit" value="save" class="btn btn-primary w-40 mt-4" style="margin-right: 10px;">Save and Continue</button>
-                            <button type="submit" name="submit" value="submit" class="btn btn-success w-40 mt-4">Submit</button>
+                            <button type="submit" name="submit" value="save" class="btn btn-primary w-40 mt-4" style="margin-right: 10px;"  disabled>Save and Continue</button>
+                            <button type="submit" name="submit" value="submit" class="btn btn-success w-40 mt-4"  disabled>Submit</button>
                         </div>
                     </form>
                 </div>
@@ -137,6 +137,36 @@
     </div>
 </div>
 <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const form = document.getElementById('studentForm');
+        const fields = Array.from(form.querySelectorAll('input, button'));
+        const requiredFields = fields.filter(field => field.hasAttribute('required')); // Filter required fields
+
+        // Enable the first field
+        requiredFields[0].disabled = false;
+
+        // Function to validate fields and enable the next
+        const validateAndEnableNext = (field, nextField) => {
+            field.addEventListener('input', function () {
+                if (field.value.trim()) {
+                    field.classList.remove('is-invalid');
+                    field.classList.add('is-valid');
+                    if (nextField) nextField.disabled = false; // Enable next field
+                } else {
+                    field.classList.remove('is-valid');
+                    field.classList.add('is-invalid');
+                    if (nextField) nextField.disabled = true; // Disable next field
+                }
+            });
+        };
+
+        // Loop through fields and apply sequential logic
+        for (let i = 0; i < requiredFields.length; i++) {
+            const currentField = requiredFields[i];
+            const nextField = requiredFields[i + 1] || null;
+            validateAndEnableNext(currentField, nextField);
+        }
+    });
     function formatToUppercaseAndValidate(input) {
         const validChars = /^[A-Z\s]*$/; // Only uppercase letters and spaces
         input.value = input.value.toUpperCase(); // Convert to uppercase
